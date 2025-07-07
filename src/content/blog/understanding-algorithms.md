@@ -2,7 +2,7 @@
 title: "Understanding Time Complexity: Big O Notation Explained"
 description: "A comprehensive guide to understanding Big O notation and time complexity analysis for algorithms."
 pubDate: 2024-01-20
-author: "Mindbender"
+author: "M1NDB3ND3R"
 tags: ["algorithms", "complexity", "computer-science"]
 ---
 

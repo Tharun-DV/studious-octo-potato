@@ -2,13 +2,13 @@
 title: "Hello World: My Journey into Computer Science"
 description: "My first blog post about starting my journey in computer science and why I created this blog."
 pubDate: 2024-01-15
-author: "Mindbender"
+author: "M1NDB3ND3R"
 tags: ["introduction", "computer-science", "journey"]
 ---
 
 # Hello World: My Journey into Computer Science
 
-Welcome to **Mindbender** – my personal blog where I document my journey through computer science, share insights, and explore the fascinating world of programming.
+Welcome to **M1NDB3ND3R** – my personal blog where I document my journey through computer science, share insights, and explore the fascinating world of programming.
 
 ## Why This Blog?
 

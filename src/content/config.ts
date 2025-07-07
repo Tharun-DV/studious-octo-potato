@@ -6,7 +6,7 @@ const blogCollection = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDate: z.date(),
-    author: z.string().default('Mindbender'),
+    author: z.string().default('M1NDB3ND3R'),
     tags: z.array(z.string()).default([]),
     password: z.string().optional(),
     draft: z.boolean().default(false),

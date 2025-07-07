@@ -4,7 +4,7 @@ description: "A detailed look at my latest AI project implementing neural networ
 pubDate: 2024-01-25
 author: "M1NDB3ND3R"
 tags: ["ai", "neural-networks", "python", "secret"]
-password: "test"
+#password: "test"
 ---
 
 # My Secret AI Project: Neural Network Implementation
