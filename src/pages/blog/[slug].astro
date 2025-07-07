@@ -1,0 +1,301 @@
+---
+import { getCollection } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import Header from '../../components/Header.astro';
+import PasswordProtection from '../../components/PasswordProtection.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}
+
+const post = Astro.props;
+const { Content } = await post.render();
+
+// Check if this is a password-protected post
+const isProtected = !!post.data.password;
+
+const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<BlogLayout title={post.data.title} description={post.data.description}>
+  <Header />
+  
+  <main class="main">
+    <div class="container">
+      {isProtected ? (
+        <div>
+          <div id="password-protection" class="password-protection">
+            <PasswordProtection postTitle={post.data.title} />
+          </div>
+          <article class="blog-post" id="blog-content" style="display: none;">
+            <header class="blog-header">
+              <h1 class="blog-title">{post.data.title}</h1>
+              <div class="blog-meta">
+                <time class="blog-date">{formattedDate}</time>
+                <span class="blog-author">by {post.data.author}</span>
+              </div>
+              <div class="blog-tags">
+                {post.data.tags.map(tag => (
+                  <span class="blog-tag">{tag}</span>
+                ))}
+              </div>
+            </header>
+            
+            <div class="blog-content">
+              <Content />
+            </div>
+            
+            <footer class="blog-footer">
+              <div class="blog-nav">
+                <a href="/blog" class="back-link">← Back to Blog</a>
+              </div>
+            </footer>
+          </article>
+          <script define:vars={{ correctPassword: post.data.password, slug: post.slug }}>
+            // Make variables available globally
+            window.correctPassword = correctPassword;
+            window.slug = slug;
+            
+            // Check if user is already authorized
+            const authKey = `post_${slug}_authorized`;
+            if (localStorage.getItem(authKey) === 'true') {
+              document.getElementById('password-protection').style.display = 'none';
+              document.getElementById('blog-content').style.display = 'block';
+            }
+          </script>
+        </div>
+      ) : (
+        <article class="blog-post">
+          <header class="blog-header">
+            <h1 class="blog-title">{post.data.title}</h1>
+            <div class="blog-meta">
+              <time class="blog-date">{formattedDate}</time>
+              <span class="blog-author">by {post.data.author}</span>
+            </div>
+            <div class="blog-tags">
+              {post.data.tags.map(tag => (
+                <span class="blog-tag">{tag}</span>
+              ))}
+            </div>
+          </header>
+          
+          <div class="blog-content">
+            <Content />
+          </div>
+          
+          <footer class="blog-footer">
+            <div class="blog-nav">
+              <a href="/blog" class="back-link">← Back to Blog</a>
+            </div>
+          </footer>
+        </article>
+      )}
+    </div>
+  </main>
+</BlogLayout>
+
+<style>
+  .main {
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .blog-post {
+    padding: 2rem 0 4rem;
+  }
+
+  .blog-header {
+    margin-bottom: 3rem;
+    text-align: center;
+    border-bottom: 1px solid #333;
+    padding-bottom: 2rem;
+  }
+
+  .blog-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .blog-meta {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .blog-date,
+  .blog-author {
+    font-family: 'Fira Code', monospace;
+  }
+
+  .blog-tags {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .blog-tag {
+    background-color: #333;
+    color: #ccc;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .blog-content {
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  .blog-content :global(h1) {
+    font-size: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .blog-content :global(h2) {
+    font-size: 1.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .blog-content :global(h3) {
+    font-size: 1.25rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .blog-content :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .blog-content :global(ul),
+  .blog-content :global(ol) {
+    margin-bottom: 1.5rem;
+  }
+
+  .blog-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .blog-content :global(blockquote) {
+    margin: 2rem 0;
+    padding-left: 1.5rem;
+    border-left: 4px solid #ffffff;
+    font-style: italic;
+    color: #ccc;
+  }
+
+  .blog-content :global(pre) {
+    margin: 2rem 0;
+    border: 1px solid #333;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+
+  .blog-content :global(table) {
+    margin: 2rem 0;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .blog-content :global(th),
+  .blog-content :global(td) {
+    border: 1px solid #333;
+    padding: 0.75rem;
+    text-align: left;
+  }
+
+  .blog-content :global(th) {
+    background-color: #1a1a1a;
+    font-weight: 600;
+  }
+
+  .blog-footer {
+    border-top: 1px solid #333;
+    padding-top: 2rem;
+    text-align: center;
+  }
+
+  .blog-nav {
+    display: flex;
+    justify-content: center;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border: 2px solid #333;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    border-color: #ffffff;
+    background-color: #1a1a1a;
+  }
+
+  .password-protection {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .blog-title {
+      font-size: 2rem;
+    }
+
+    .blog-meta {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .blog-content :global(h1) {
+      font-size: 1.5rem;
+    }
+
+    .blog-content :global(h2) {
+      font-size: 1.25rem;
+    }
+
+    .blog-content :global(h3) {
+      font-size: 1.1rem;
+    }
+
+    .blog-content :global(pre) {
+      font-size: 0.9rem;
+    }
+
+    .blog-content :global(table) {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+</BlogLayout>

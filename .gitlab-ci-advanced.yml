@@ -1,0 +1,35 @@
+# Simple GitLab CI/CD Pipeline for Astro Blog
+image: node:18-alpine
+
+# Define stages
+stages:
+  - build
+  - deploy
+
+# Cache node_modules for faster builds
+cache:
+  paths:
+    - node_modules/
+
+# Build the project
+build:
+  stage: build
+  script:
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
+# Deploy to GitLab Pages
+pages:
+  stage: deploy
+  script:
+    - mv dist public
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
+  needs: ["build"]

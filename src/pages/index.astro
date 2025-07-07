@@ -1,0 +1,247 @@
+---
+import { getCollection } from 'astro:content';
+import BlogLayout from '../layouts/BlogLayout.astro';
+import Header from '../components/Header.astro';
+import BlogCard from '../components/BlogCard.astro';
+
+const allPosts = await getCollection('blog');
+const publishedPosts = allPosts
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+---
+
+<BlogLayout title="Mindbender - Computer Science Blog" description="A blog by a computer science student exploring algorithms, programming, and technology.">
+  <Header />
+  
+  <main class="main">
+    <div class="container">
+      <section class="hero">
+        <div class="hero-content">
+          <h1 class="hero-title">
+            <span class="bracket">[</span>
+            Welcome to Mindbender
+            <span class="bracket">]</span>
+          </h1>
+          <p class="hero-description">
+            A computer science student's journey through algorithms, programming languages, 
+            and the fascinating world of technology. Join me as I explore complex concepts, 
+            share insights, and document my learning process.
+          </p>
+          <div class="hero-actions">
+            <a href="/blog" class="cta-button">
+              Explore Blog
+            </a>
+            <a href="/about" class="cta-button secondary">
+              About Me
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="recent-posts">
+        <h2 class="section-title">Recent Posts</h2>
+        <div class="posts-grid">
+          {publishedPosts.map(post => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              tags={post.data.tags}
+              slug={post.slug}
+              isProtected={!!post.data.password}
+            />
+          ))}
+        </div>
+        <div class="view-all">
+          <a href="/blog" class="view-all-link">
+            View All Posts →
+          </a>
+        </div>
+      </section>
+
+      <section class="about-preview">
+        <div class="about-content">
+          <h2 class="section-title">About This Blog</h2>
+          <p>
+            Mindbender is my personal space to document my journey through computer science. 
+            Here you'll find in-depth explorations of algorithms, programming concepts, 
+            project showcases, and my thoughts on the ever-evolving tech landscape.
+          </p>
+          <p>
+            Each post is written with the goal of making complex topics accessible 
+            while maintaining technical accuracy. Whether you're a fellow student, 
+            a seasoned developer, or just curious about computer science, 
+            I hope you find something valuable here.
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+</BlogLayout>
+
+<style>
+  .main {
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .hero {
+    padding: 4rem 0;
+    text-align: center;
+  }
+
+  .hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .bracket {
+    color: #666;
+    font-weight: 300;
+  }
+
+  .hero-description {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #ffffff;
+    color: #000000;
+    border: 2px solid #ffffff;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .cta-button:hover {
+    background-color: #cccccc;
+    border-color: #cccccc;
+    transform: translateY(-2px);
+  }
+
+  .cta-button.secondary {
+    background-color: transparent;
+    color: #ffffff;
+  }
+
+  .cta-button.secondary:hover {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  .recent-posts {
+    padding: 4rem 0;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .view-all {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .view-all-link {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #ffffff;
+    text-decoration: none;
+    border: 2px solid #ffffff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .view-all-link:hover {
+    background-color: #ffffff;
+    color: #000000;
+    transform: translateY(-2px);
+  }
+
+  .about-preview {
+    padding: 4rem 0;
+    background-color: #1a1a1a;
+    border-radius: 1rem;
+    margin-bottom: 4rem;
+  }
+
+  .about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    text-align: center;
+  }
+
+  .about-content p {
+    font-size: 1.1rem;
+    color: #ccc;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .cta-button {
+      width: 100%;
+      max-width: 200px;
+    }
+
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about-content {
+      padding: 0 1rem;
+    }
+  }
+</style>
+</BlogLayout>

@@ -1,0 +1,229 @@
+---
+---
+
+<div class="search-container">
+  <div class="search-wrapper">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search posts..."
+      class="search-input"
+    />
+    <button class="search-button" id="searchButton">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+    </button>
+  </div>
+  <div id="searchResults" class="search-results hidden"></div>
+</div>
+
+<style>
+  .search-container {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+
+  .search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    padding-right: 3rem;
+    background-color: #1a1a1a;
+    border: 2px solid #333;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    font-family: 'Fira Code', monospace;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+  }
+
+  .search-input::placeholder {
+    color: #666;
+  }
+
+  .search-button {
+    position: absolute;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .search-button:hover {
+    color: #ffffff;
+  }
+
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #1a1a1a;
+    border: 2px solid #333;
+    border-top: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 50;
+  }
+
+  .search-results.hidden {
+    display: none;
+  }
+
+  .search-result {
+    padding: 1rem;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .search-result:hover {
+    background-color: #333;
+  }
+
+  .search-result:last-child {
+    border-bottom: none;
+  }
+
+  .search-result-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .search-result-excerpt {
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .search-result-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .search-result-tag {
+    background-color: #333;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    color: #ccc;
+  }
+
+  .no-results {
+    padding: 1rem;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+  }
+</style>
+
+<script>
+  // This will be populated by the search functionality
+  let searchData = [];
+
+  // Fetch blog posts for search
+  async function initializeSearch() {
+    try {
+      const response = await fetch('/api/search.json');
+      searchData = await response.json();
+    } catch (error) {
+      console.error('Failed to load search data:', error);
+    }
+  }
+
+  function performSearch(query) {
+    if (!query.trim()) {
+      return [];
+    }
+
+    const lowercaseQuery = query.toLowerCase();
+    
+    return searchData.filter(post => {
+      const titleMatch = post.title.toLowerCase().includes(lowercaseQuery);
+      const contentMatch = post.content.toLowerCase().includes(lowercaseQuery);
+      const tagMatch = post.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery));
+      
+      return titleMatch || contentMatch || tagMatch;
+    });
+  }
+
+  function displayResults(results) {
+    const resultsContainer = document.getElementById('searchResults');
+    
+    if (results.length === 0) {
+      resultsContainer.innerHTML = '<div class="no-results">No posts found</div>';
+      resultsContainer.classList.remove('hidden');
+      return;
+    }
+
+    const resultsHTML = results.map(post => `
+      <div class="search-result" onclick="window.location.href='/blog/${post.slug}'">
+        <div class="search-result-title">${post.title}</div>
+        <div class="search-result-excerpt">${post.description}</div>
+        <div class="search-result-tags">
+          ${post.tags.map(tag => `<span class="search-result-tag">${tag}</span>`).join('')}
+        </div>
+      </div>
+    `).join('');
+
+    resultsContainer.innerHTML = resultsHTML;
+    resultsContainer.classList.remove('hidden');
+  }
+
+  // Initialize search when page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeSearch();
+
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const searchResults = document.getElementById('searchResults');
+
+    let searchTimeout;
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value;
+      
+      clearTimeout(searchTimeout);
+      
+      if (!query.trim()) {
+        searchResults.classList.add('hidden');
+        return;
+      }
+
+      searchTimeout = setTimeout(() => {
+        const results = performSearch(query);
+        displayResults(results);
+      }, 300);
+    });
+
+    searchButton.addEventListener('click', () => {
+      const query = searchInput.value;
+      const results = performSearch(query);
+      displayResults(results);
+    });
+
+    // Hide results when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-container')) {
+        searchResults.classList.add('hidden');
+      }
+    });
+  });
+</script>

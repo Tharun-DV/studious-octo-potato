@@ -1,0 +1,120 @@
+---
+import { getCollection } from 'astro:content';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import Header from '../../components/Header.astro';
+import SearchBar from '../../components/SearchBar.astro';
+import BlogCard from '../../components/BlogCard.astro';
+
+const allPosts = await getCollection('blog');
+const publishedPosts = allPosts
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+---
+
+<BlogLayout title="All Posts - Mindbender" description="All blog posts from Mindbender - exploring computer science, algorithms, and programming.">
+  <Header />
+  
+  <main class="main">
+    <div class="container">
+      <section class="blog-header">
+        <h1 class="page-title">All Posts</h1>
+        <p class="page-description">
+          Exploring the depths of computer science, one post at a time.
+        </p>
+      </section>
+
+      <section class="search-section">
+        <SearchBar />
+      </section>
+
+      <section class="posts-section">
+        <div class="posts-grid">
+          {publishedPosts.map(post => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              tags={post.data.tags}
+              slug={post.slug}
+              isProtected={!!post.data.password}
+            />
+          ))}
+        </div>
+        
+        {publishedPosts.length === 0 && (
+          <div class="no-posts">
+            <p>No posts found. Check back later for new content!</p>
+          </div>
+        )}
+      </section>
+    </div>
+  </main>
+</BlogLayout>
+
+<style>
+  .main {
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .blog-header {
+    padding: 3rem 0 2rem;
+    text-align: center;
+  }
+
+  .page-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .page-description {
+    font-size: 1.2rem;
+    color: #ccc;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .search-section {
+    padding: 1rem 0 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .posts-section {
+    padding: 2rem 0 4rem;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+
+  .no-posts {
+    text-align: center;
+    padding: 4rem 0;
+    color: #666;
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 2rem;
+    }
+
+    .page-description {
+      font-size: 1.1rem;
+    }
+
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</BlogLayout>

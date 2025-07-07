@@ -1,0 +1,85 @@
+# GitLab CI/CD Pipeline for Astro Blog
+image: node:18-alpine
+
+# Define stages
+stages:
+  - install
+  - test
+  - build
+  - deploy
+
+# Cache node_modules for faster builds
+cache:
+  paths:
+    - node_modules/
+
+# Install dependencies
+install_dependencies:
+  stage: install
+  script:
+    - npm ci
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour
+
+# Run tests (if you have any)
+test:
+  stage: test
+  script:
+    - npm run test
+  allow_failure: true  # Allow failure if no tests are defined
+  needs: ["install_dependencies"]
+
+# Build the project
+build:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+  needs: ["install_dependencies"]
+
+# Deploy to GitLab Pages
+pages:
+  stage: deploy
+  script:
+    - mv dist public
+  artifacts:
+    paths:
+      - public
+  only:
+    - main  # Only deploy from main branch
+  needs: ["build"]
+
+# Deploy to staging (optional)
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "Deploying to staging environment..."
+    # Add your staging deployment commands here
+    # For example, deploy to a staging server or environment
+  environment:
+    name: staging
+    url: https://staging.yourdomain.com
+  only:
+    - develop
+  needs: ["build"]
+  when: manual  # Manual deployment to staging
+
+# Deploy to production (optional)
+deploy_production:
+  stage: deploy
+  script:
+    - echo "Deploying to production environment..."
+    # Add your production deployment commands here
+    # For example, deploy to your production server
+  environment:
+    name: production
+    url: https://yourdomain.com
+  only:
+    - main
+  needs: ["build"]
+  when: manual  # Manual deployment to production

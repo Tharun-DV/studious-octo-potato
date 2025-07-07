@@ -1,0 +1,161 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  tags: string[];
+  slug: string;
+  isProtected: boolean;
+}
+
+const { title, description, pubDate, tags, slug, isProtected } = Astro.props;
+
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<article class="blog-card">
+  <div class="blog-card-header">
+    <h2 class="blog-card-title">
+      <a href={`/blog/${slug}`}>
+        {title}
+        {isProtected && <span class="protected-icon">🔒</span>}
+      </a>
+    </h2>
+    <time class="blog-card-date">{formattedDate}</time>
+  </div>
+  
+  <p class="blog-card-description">{description}</p>
+  
+  <div class="blog-card-footer">
+    <div class="blog-card-tags">
+      {tags.map(tag => (
+        <span class="blog-card-tag">{tag}</span>
+      ))}
+    </div>
+    <a href={`/blog/${slug}`} class="blog-card-link">
+      Read more →
+    </a>
+  </div>
+</article>
+
+<style>
+  .blog-card {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .blog-card:hover {
+    border-color: #666;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+  }
+
+  .blog-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+
+  .blog-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    flex: 1;
+  }
+
+  .blog-card-title a {
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .blog-card-title a:hover {
+    color: #cccccc;
+  }
+
+  .protected-icon {
+    font-size: 0.8em;
+    opacity: 0.7;
+  }
+
+  .blog-card-date {
+    font-size: 0.9rem;
+    color: #666;
+    white-space: nowrap;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .blog-card-description {
+    color: #ccc;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .blog-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .blog-card-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+
+  .blog-card-tag {
+    background-color: #333;
+    color: #ccc;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .blog-card-link {
+    font-weight: 500;
+    color: #ffffff;
+    border: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .blog-card-link:hover {
+    color: #cccccc;
+  }
+
+  @media (max-width: 768px) {
+    .blog-card-header {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .blog-card-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .blog-card-tags {
+      order: 2;
+    }
+
+    .blog-card-link {
+      order: 1;
+      align-self: flex-end;
+    }
+  }
+</style>
