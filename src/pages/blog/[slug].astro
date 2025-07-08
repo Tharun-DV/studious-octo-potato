@@ -33,7 +33,12 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
       {isProtected ? (
         <div>
           <div id="password-protection" class="password-protection">
-            <PasswordProtection postTitle={post.data.title} />
+            <PasswordProtection 
+              postTitle={post.data.title} 
+              pubDate={post.data.pubDate}
+              author={post.data.author}
+              tags={post.data.tags}
+            />
           </div>
           <article class="blog-post" id="blog-content" style="display: none;">
             <header class="blog-header">

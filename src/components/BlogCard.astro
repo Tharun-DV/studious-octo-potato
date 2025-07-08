@@ -64,6 +64,8 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     align-items: flex-start;
     margin-bottom: 1rem;
     gap: 1rem;
+    position: relative;
+    min-height: 1.5rem;
   }
 
   .blog-card-title {
@@ -71,6 +73,8 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     font-weight: 600;
     margin: 0;
     flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
   }
 
   .blog-card-title a {
@@ -78,6 +82,8 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex-wrap: wrap;
+    min-width: 0;
   }
 
   .blog-card-title a:hover {
@@ -91,9 +97,12 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 
   .blog-card-date {
     font-size: 0.9rem;
-    color: #666;
+    color: #999;
     white-space: nowrap;
     font-family: 'Fira Code', monospace;
+    font-weight: 400;
+    flex-shrink: 0;
+    align-self: flex-start;
   }
 
   .blog-card-description {
@@ -141,6 +150,10 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     .blog-card-header {
       flex-direction: column;
       gap: 0.5rem;
+    }
+
+    .blog-card-date {
+      align-self: flex-start;
     }
 
     .blog-card-footer {
