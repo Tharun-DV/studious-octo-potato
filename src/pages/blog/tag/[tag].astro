@@ -1,29 +1,50 @@
 ---
 import { getCollection } from 'astro:content';
-import BlogLayout from '../../layouts/BlogLayout.astro';
-import Header from '../../components/Header.astro';
-import SearchBar from '../../components/SearchBar.astro';
-import TagFilter from '../../components/TagFilter.astro';
-import BlogCard from '../../components/BlogCard.astro';
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import Header from '../../../components/Header.astro';
+import SearchBar from '../../../components/SearchBar.astro';
+import TagFilter from '../../../components/TagFilter.astro';
+import BlogCard from '../../../components/BlogCard.astro';
 
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const publishedPosts = posts.filter(post => !post.data.draft);
+  
+  // Get all unique tags
+  const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
+  
+  return allTags.map(tag => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
 const allPosts = await getCollection('blog');
 const publishedPosts = allPosts
   .filter(post => !post.data.draft)
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 
+const taggedPosts = publishedPosts.filter(post => 
+  post.data.tags.includes(tag)
+);
+
 // Get all tags for the filter
 const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
 ---
 
-<BlogLayout title="All Posts - M1NDB3ND3R" description="All blog posts from M1NDB3ND3R - exploring computer science, algorithms, and programming.">
+<BlogLayout 
+  title={`Posts tagged "${tag}" - M1NDB3ND3R`} 
+  description={`All blog posts tagged with "${tag}" from M1NDB3ND3R - exploring computer science, algorithms, and programming.`}
+>
   <Header />
   
   <main class="main">
     <div class="container">
       <section class="blog-header">
-        <h1 class="page-title">All Posts</h1>
+        <h1 class="page-title">Posts tagged "{tag}"</h1>
         <p class="page-description">
-          Exploring the depths of computer science, one post at a time.
+          {taggedPosts.length} post{taggedPosts.length !== 1 ? 's' : ''} found
         </p>
       </section>
 
@@ -32,12 +53,12 @@ const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
       </section>
 
       <section class="filter-section">
-        <TagFilter allTags={allTags} />
+        <TagFilter allTags={allTags} selectedTag={tag} />
       </section>
 
       <section class="posts-section">
         <div class="posts-grid">
-          {publishedPosts.map(post => (
+          {taggedPosts.map(post => (
             <BlogCard
               title={post.data.title}
               description={post.data.description}
@@ -49,9 +70,9 @@ const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
           ))}
         </div>
         
-        {publishedPosts.length === 0 && (
+        {taggedPosts.length === 0 && (
           <div class="no-posts">
-            <p>No posts found. Check back later for new content!</p>
+            <p>No posts found with this tag. <a href="/blog">View all posts</a></p>
           </div>
         )}
       </section>
@@ -115,6 +136,11 @@ const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
     font-style: italic;
   }
 
+  .no-posts a {
+    color: #ffffff;
+    text-decoration: underline;
+  }
+
   @media (max-width: 768px) {
     .page-title {
       font-size: 2rem;
@@ -128,5 +154,4 @@ const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
       grid-template-columns: 1fr;
     }
   }
-</style>
-</BlogLayout>
+</style> 

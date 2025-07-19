@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://blog.dv08.in/sitemap.xml
+
+# Disallow password protected content
+Disallow: /blog/*/password 
