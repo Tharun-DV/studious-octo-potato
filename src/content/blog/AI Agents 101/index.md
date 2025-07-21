@@ -1,3 +1,11 @@
+---
+title: "AI Agents 101"
+description: "Just a What are AI Agents and some of answer for my Question about AI Agents and How it does work"
+pubDate: 2025-07-21
+author: "M1NDB3ND3R"
+tags: ["AI","AI Agents"]
+---
+
 # Understanding AI Agents next generation of intelligent systems.
 
 ## What Are AI Agents?
