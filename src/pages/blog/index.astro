@@ -5,6 +5,7 @@ import Header from '../../components/Header.astro';
 import SearchBar from '../../components/SearchBar.astro';
 import TagFilter from '../../components/TagFilter.astro';
 import BlogCard from '../../components/BlogCard.astro';
+import ScrollToTop from '../../components/ScrollToTop.astro';
 
 const allPosts = await getCollection('blog');
 const publishedPosts = allPosts
@@ -31,22 +32,23 @@ const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
         <SearchBar />
       </section>
 
-      <section class="filter-section">
-        <TagFilter allTags={allTags} />
-      </section>
 
       <section class="posts-section">
         <div class="posts-grid">
-          {publishedPosts.map(post => (
-            <BlogCard
-              title={post.data.title}
-              description={post.data.description}
-              pubDate={post.data.pubDate}
-              tags={post.data.tags}
-              slug={post.slug}
-              isProtected={!!post.data.password}
-            />
-          ))}
+          {publishedPosts.map(async (post) => {
+            const { Content } = await post.render();
+            return (
+              <BlogCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate}
+                tags={post.data.tags}
+                slug={post.slug}
+                isProtected={!!post.data.password}
+                content={post.body}
+              />
+            );
+          })}
         </div>
         
         {publishedPosts.length === 0 && (
@@ -57,6 +59,8 @@ const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
       </section>
     </div>
   </main>
+
+  <ScrollToTop />
 </BlogLayout>
 
 <style>
@@ -94,9 +98,6 @@ const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
     margin: 0 auto;
   }
 
-  .filter-section {
-    margin-bottom: 2rem;
-  }
 
   .posts-section {
     padding: 2rem 0 4rem;

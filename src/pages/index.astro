@@ -42,16 +42,19 @@ const publishedPosts = allPosts
       <section class="recent-posts">
         <h2 class="section-title">Recent Posts</h2>
         <div class="posts-grid">
-          {publishedPosts.map(post => (
-            <BlogCard
-              title={post.data.title}
-              description={post.data.description}
-              pubDate={post.data.pubDate}
-              tags={post.data.tags}
-              slug={post.slug}
-              isProtected={!!post.data.password}
-            />
-          ))}
+          {publishedPosts.map(async (post) => {
+            return (
+              <BlogCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate}
+                tags={post.data.tags}
+                slug={post.slug}
+                isProtected={!!post.data.password}
+                content={post.body}
+              />
+            );
+          })}
         </div>
         <div class="view-all">
           <a href="/blog" class="view-all-link">

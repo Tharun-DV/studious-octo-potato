@@ -1,4 +1,6 @@
 ---
+import { calculateReadingTime, formatReadingTime } from '../utils/readingTime';
+
 interface Props {
   title: string;
   description: string;
@@ -6,15 +8,18 @@ interface Props {
   tags: string[];
   slug: string;
   isProtected: boolean;
+  content?: string;
 }
 
-const { title, description, pubDate, tags, slug, isProtected } = Astro.props;
+const { title, description, pubDate, tags, slug, isProtected, content = '' } = Astro.props;
 
 const formattedDate = pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric'
 });
+
+const readingTime = content ? calculateReadingTime(content) : 0;
 ---
 
 <article class="blog-card">
@@ -25,7 +30,12 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
         {isProtected && <span class="protected-icon">🔒</span>}
       </a>
     </h2>
-    <time class="blog-card-date">{formattedDate}</time>
+    <div class="blog-card-meta">
+      <time class="blog-card-date">{formattedDate}</time>
+      {readingTime > 0 && (
+        <span class="blog-card-reading-time">{formatReadingTime(readingTime)}</span>
+      )}
+    </div>
   </div>
   
   <p class="blog-card-description">{description}</p>
@@ -66,6 +76,30 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     gap: 1rem;
     position: relative;
     min-height: 1.5rem;
+  }
+
+  .blog-card-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+    flex-shrink: 0;
+  }
+
+  .blog-card-date {
+    font-size: 0.9rem;
+    color: #999;
+    white-space: nowrap;
+    font-family: 'Fira Code', monospace;
+    font-weight: 400;
+  }
+
+  .blog-card-reading-time {
+    font-size: 0.8rem;
+    color: #666;
+    font-family: 'Fira Code', monospace;
+    font-weight: 300;
+    white-space: nowrap;
   }
 
   .blog-card-title {
@@ -154,6 +188,10 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 
     .blog-card-date {
       align-self: flex-start;
+    }
+
+    .blog-card-meta {
+      align-items: flex-start;
     }
 
     .blog-card-footer {
