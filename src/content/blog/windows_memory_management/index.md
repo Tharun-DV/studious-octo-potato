@@ -213,9 +213,9 @@ You will see the string "Hello from allocated memory!" stored at the memory addr
 
 ![Setting a breakpoint in the debugger to inspect memory](debug.png)
 *Initially, the allocated memory is empty (or zeroed out).*
-![Viewing the uninitialized memory block in the debugger](memory-before-allocation.png)
+![Viewing the uninitialized memory block in the debugger](<memory before allocation.png>)
 *After memcpy, the string is visible in the memory viewer.*
-![Viewing the memory block after the string has been copied](memory-after-adding-data.png)
+![Viewing the memory block after the string has been copied](<memory after adding data.png>)
 
 ## Conclusion
 
