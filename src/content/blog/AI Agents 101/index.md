@@ -1,7 +1,7 @@
 ---
 title: "AI Agents 101"
 description: "Just a What are AI Agents and some of answer for my Question about AI Agents and How it does work"
-pubDate: 2025-07-21
+pubDate: 2025-08-5
 author: "M1NDB3ND3R"
 tags: ["AI","AI Agents"]
 ---
@@ -64,4 +64,5 @@ Through this process, the agent demonstrates deep reasoning and the ability to l
 
 ## Why Do AI Agents Matter?
 AI agents are reshaping industries by automating complex workflows—from customer support bots that resolve queries autonomously, to business analytics tools that gather and assess data in real time. Their ability to plan, reason, adapt, and harness new tools on demand is what makes them distinct and extremely valuable for modern organizations.
+
 
