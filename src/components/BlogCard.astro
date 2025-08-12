@@ -54,8 +54,8 @@ const readingTime = content ? calculateReadingTime(content) : 0;
 
 <style>
   .blog-card {
-    background-color: #1a1a1a;
-    border: 1px solid #333;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 0.5rem;
     padding: 1.5rem;
     transition: all 0.3s ease;
@@ -63,9 +63,9 @@ const readingTime = content ? calculateReadingTime(content) : 0;
   }
 
   .blog-card:hover {
-    border-color: #666;
+    border-color: var(--accent-color);
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px var(--accent-glow);
   }
 
   .blog-card-header {
@@ -88,7 +88,7 @@ const readingTime = content ? calculateReadingTime(content) : 0;
 
   .blog-card-date {
     font-size: 0.9rem;
-    color: #999;
+    color: var(--text-muted);
     white-space: nowrap;
     font-family: 'Fira Code', monospace;
     font-weight: 400;
@@ -96,7 +96,7 @@ const readingTime = content ? calculateReadingTime(content) : 0;
 
   .blog-card-reading-time {
     font-size: 0.8rem;
-    color: #666;
+    color: var(--text-muted);
     font-family: 'Fira Code', monospace;
     font-weight: 300;
     white-space: nowrap;
@@ -109,6 +109,7 @@ const readingTime = content ? calculateReadingTime(content) : 0;
     flex: 1;
     min-width: 0;
     overflow-wrap: break-word;
+    color: var(--text-primary);
   }
 
   .blog-card-title a {
@@ -118,10 +119,11 @@ const readingTime = content ? calculateReadingTime(content) : 0;
     gap: 0.5rem;
     flex-wrap: wrap;
     min-width: 0;
+    color: var(--text-primary);
   }
 
   .blog-card-title a:hover {
-    color: #cccccc;
+    color: var(--accent-color);
   }
 
   .protected-icon {
@@ -129,18 +131,8 @@ const readingTime = content ? calculateReadingTime(content) : 0;
     opacity: 0.7;
   }
 
-  .blog-card-date {
-    font-size: 0.9rem;
-    color: #999;
-    white-space: nowrap;
-    font-family: 'Fira Code', monospace;
-    font-weight: 400;
-    flex-shrink: 0;
-    align-self: flex-start;
-  }
-
   .blog-card-description {
-    color: #ccc;
+    color: var(--text-secondary);
     margin-bottom: 1.5rem;
     line-height: 1.6;
   }
@@ -160,24 +152,28 @@ const readingTime = content ? calculateReadingTime(content) : 0;
   }
 
   .blog-card-tag {
-    background-color: #333;
-    color: #ccc;
+    background-color: var(--accent-hover);
+    color: var(--text-secondary);
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
     font-size: 0.8rem;
     font-family: 'Fira Code', monospace;
+    border: 1px solid var(--border-color);
   }
 
   .blog-card-link {
     font-weight: 500;
-    color: #ffffff;
+    color: var(--accent-color);
     border: none;
     transition: all 0.3s ease;
     white-space: nowrap;
   }
 
   .blog-card-link:hover {
-    color: #cccccc;
+    color: var(--text-primary);
+    background-color: var(--accent-hover);
+    padding: 2px 4px;
+    border-radius: 3px;
   }
 
   @media (max-width: 768px) {

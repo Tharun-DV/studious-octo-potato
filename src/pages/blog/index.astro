@@ -83,11 +83,12 @@ const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 1rem;
+    color: var(--text-primary);
   }
 
   .page-description {
     font-size: 1.2rem;
-    color: #ccc;
+    color: var(--text-secondary);
     max-width: 600px;
     margin: 0 auto;
   }
@@ -112,7 +113,7 @@ const allTags = [...new Set(publishedPosts.flatMap(post => post.data.tags))];
   .no-posts {
     text-align: center;
     padding: 4rem 0;
-    color: #666;
+    color: var(--text-muted);
     font-style: italic;
   }
 

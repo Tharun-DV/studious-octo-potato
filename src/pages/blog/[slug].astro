@@ -127,7 +127,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
   .blog-header {
     margin-bottom: 3rem;
     text-align: center;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 2rem;
   }
 
@@ -136,6 +136,7 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
     font-weight: 700;
     margin-bottom: 1rem;
     line-height: 1.2;
+    color: var(--text-primary);
   }
 
   .blog-meta {
@@ -143,13 +144,14 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
     justify-content: center;
     gap: 1rem;
     margin-bottom: 1rem;
-    color: #666;
+    color: var(--text-muted);
     font-size: 0.9rem;
   }
 
   .blog-date,
   .blog-author {
     font-family: 'Fira Code', monospace;
+    color: var(--text-muted);
   }
 
   .blog-tags {
@@ -160,12 +162,13 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
   }
 
   .blog-tag {
-    background-color: #333;
-    color: #ccc;
+    background-color: var(--accent-hover);
+    color: var(--text-secondary);
     padding: 0.25rem 0.75rem;
     border-radius: 0.25rem;
     font-size: 0.8rem;
     font-family: 'Fira Code', monospace;
+    border: 1px solid var(--border-color);
   }
 
   .blog-content {
@@ -177,22 +180,26 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
     font-size: 2rem;
     margin-top: 3rem;
     margin-bottom: 1rem;
+    color: var(--text-primary);
   }
 
   .blog-content :global(h2) {
     font-size: 1.5rem;
     margin-top: 2.5rem;
     margin-bottom: 1rem;
+    color: var(--text-primary);
   }
 
   .blog-content :global(h3) {
     font-size: 1.25rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
+    color: var(--text-primary);
   }
 
   .blog-content :global(p) {
     margin-bottom: 1.5rem;
+    color: var(--text-primary);
   }
 
   .blog-content :global(ul),
@@ -202,19 +209,20 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
 
   .blog-content :global(li) {
     margin-bottom: 0.5rem;
+    color: var(--text-primary);
   }
 
   .blog-content :global(blockquote) {
     margin: 2rem 0;
     padding-left: 1.5rem;
-    border-left: 4px solid #ffffff;
+    border-left: 4px solid var(--accent-color);
     font-style: italic;
-    color: #ccc;
+    color: var(--text-secondary);
   }
 
   .blog-content :global(pre) {
     margin: 2rem 0;
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
     border-radius: 0.5rem;
     overflow-x: auto;
   }
@@ -227,18 +235,19 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
 
   .blog-content :global(th),
   .blog-content :global(td) {
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
     padding: 0.75rem;
     text-align: left;
+    color: var(--text-primary);
   }
 
   .blog-content :global(th) {
-    background-color: #1a1a1a;
+    background-color: var(--bg-secondary);
     font-weight: 600;
   }
 
   .blog-footer {
-    border-top: 1px solid #333;
+    border-top: 1px solid var(--border-color);
     padding-top: 2rem;
     text-align: center;
   }
@@ -252,18 +261,21 @@ const formattedDate = post.data.pubDate.toLocaleDateString('en-US', {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: #ffffff;
+    color: var(--text-primary);
     text-decoration: none;
     font-weight: 500;
     padding: 0.5rem 1rem;
-    border: 2px solid #333;
+    border: 2px solid var(--border-color);
     border-radius: 0.25rem;
     transition: all 0.3s ease;
+    background-color: var(--bg-secondary);
   }
 
   .back-link:hover {
-    border-color: #ffffff;
-    background-color: #1a1a1a;
+    border-color: var(--accent-color);
+    background-color: var(--accent-hover);
+    color: var(--accent-color);
+    transform: translateY(-1px);
   }
 
   .password-protection {

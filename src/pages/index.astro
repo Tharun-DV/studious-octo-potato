@@ -32,7 +32,7 @@ const publishedPosts = allPosts
             <a href="/blog" class="cta-button">
               Explore Blog
             </a>
-            <a href="/about" class="cta-button secondary">
+            <a href="https://dv08.in" target="_blank" rel="noopener noreferrer" class="cta-button secondary">
               About Me
             </a>
           </div>
@@ -109,16 +109,17 @@ const publishedPosts = allPosts
     font-weight: 700;
     margin-bottom: 1.5rem;
     line-height: 1.2;
+    color: var(--text-primary);
   }
 
   .bracket {
-    color: #666;
+    color: var(--text-muted);
     font-weight: 300;
   }
 
   .hero-description {
     font-size: 1.2rem;
-    color: #ccc;
+    color: var(--text-secondary);
     margin-bottom: 2rem;
     line-height: 1.6;
   }
@@ -133,9 +134,9 @@ const publishedPosts = allPosts
   .cta-button {
     display: inline-block;
     padding: 0.75rem 1.5rem;
-    background-color: #ffffff;
-    color: #000000;
-    border: 2px solid #ffffff;
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
+    border: 2px solid var(--text-primary);
     border-radius: 0.5rem;
     font-weight: 500;
     text-decoration: none;
@@ -144,19 +145,20 @@ const publishedPosts = allPosts
   }
 
   .cta-button:hover {
-    background-color: #cccccc;
-    border-color: #cccccc;
+    background-color: var(--text-secondary);
+    border-color: var(--text-secondary);
     transform: translateY(-2px);
   }
 
   .cta-button.secondary {
     background-color: transparent;
-    color: #ffffff;
+    color: var(--text-primary);
+    border-color: var(--text-primary);
   }
 
   .cta-button.secondary:hover {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
   }
 
   .recent-posts {
@@ -168,6 +170,7 @@ const publishedPosts = allPosts
     font-weight: 600;
     margin-bottom: 2rem;
     text-align: center;
+    color: var(--text-primary);
   }
 
   .posts-grid {
@@ -185,25 +188,26 @@ const publishedPosts = allPosts
   .view-all-link {
     font-size: 1.1rem;
     font-weight: 500;
-    color: #ffffff;
+    color: var(--text-primary);
     text-decoration: none;
-    border: 2px solid #ffffff;
+    border: 2px solid var(--text-primary);
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
     transition: all 0.3s ease;
   }
 
   .view-all-link:hover {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
     transform: translateY(-2px);
   }
 
   .about-preview {
     padding: 4rem 0;
-    background-color: #1a1a1a;
+    background-color: var(--bg-secondary);
     border-radius: 1rem;
     margin-bottom: 4rem;
+    border: 1px solid var(--border-color);
   }
 
   .about-content {
@@ -215,7 +219,7 @@ const publishedPosts = allPosts
 
   .about-content p {
     font-size: 1.1rem;
-    color: #ccc;
+    color: var(--text-secondary);
     line-height: 1.8;
   }
 
